@@ -26,21 +26,21 @@
 <meta property="og:site_name" content="Viking&#39;s Blog">
 <meta property="og:description" content="安装OpenClash安装包 在命令行中输入:  1ssh root@192.168.8.1    P.S. 密码为路由器管理员密码（非Wifi登录密码）  更新软件及安装依赖，在终端上输入:  123opkg updateopkg install coreutils-nohup bash iptables dnsmasq-full curl ca-certificates ipset ip-fu">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://v1kin9.github.io/1.png">
-<meta property="og:image" content="https://v1kin9.github.io/2.png">
-<meta property="og:image" content="https://v1kin9.github.io/3.png">
-<meta property="og:image" content="https://v1kin9.github.io/4.png">
-<meta property="og:image" content="https://v1kin9.github.io/5.png">
-<meta property="og:image" content="https://v1kin9.github.io/6.png">
-<meta property="og:image" content="https://v1kin9.github.io/7.png">
-<meta property="og:image" content="https://v1kin9.github.io/8.png">
-<meta property="og:image" content="https://v1kin9.github.io/9.png">
-<meta property="og:image" content="https://v1kin9.github.io/10.png">
+<meta property="og:image" content="https://v1kin9.github.io/2024/09/05/openclash/1.png">
+<meta property="og:image" content="https://v1kin9.github.io/2024/09/05/openclash/2.png">
+<meta property="og:image" content="https://v1kin9.github.io/2024/09/05/openclash/3.png">
+<meta property="og:image" content="https://v1kin9.github.io/2024/09/05/openclash/4.png">
+<meta property="og:image" content="https://v1kin9.github.io/2024/09/05/openclash/5.png">
+<meta property="og:image" content="https://v1kin9.github.io/2024/09/05/openclash/6.png">
+<meta property="og:image" content="https://v1kin9.github.io/2024/09/05/openclash/7.png">
+<meta property="og:image" content="https://v1kin9.github.io/2024/09/05/openclash/8.png">
+<meta property="og:image" content="https://v1kin9.github.io/2024/09/05/openclash/9.png">
+<meta property="og:image" content="https://v1kin9.github.io/2024/09/05/openclash/10.png">
 <meta property="article:published_time" content="2024-09-04T18:55:48.500Z">
-<meta property="article:modified_time" content="2024-09-04T19:06:18.380Z">
+<meta property="article:modified_time" content="2024-09-04T19:16:56.530Z">
 <meta property="article:author" content="V1kin9">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://v1kin9.github.io/1.png">
+<meta name="twitter:image" content="https://v1kin9.github.io/2024/09/05/openclash/1.png">
   
   
   
@@ -290,30 +290,30 @@
 <li><p>在命令行中输入:</p>
  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">ssh root@192.168.8.1<br></code></pre></td></tr></table></figure>
 
-<p> <img src="/1.png" srcset="/img/loading.gif" lazyload alt="登录"><br> P.S. 密码为路由器管理员密码（非Wifi登录密码）</p>
+<p> <img src="/2024/09/05/openclash/1.png" srcset="/img/loading.gif" lazyload alt="登录"><br> P.S. 密码为路由器管理员密码（非Wifi登录密码）</p>
 </li>
 <li><p>更新软件及安装依赖，在终端上输入:</p>
  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">opkg update<br><br>opkg install coreutils-nohup bash iptables dnsmasq-full curl ca-certificates ipset ip-full iptables-mod-tproxy iptables-mod-extra libcap libcap-bin ruby ruby-yaml kmod-tun kmod-inet-diag unzip luci-compat luci luci-base<br></code></pre></td></tr></table></figure>
 
-<p> <img src="/2.png" srcset="/img/loading.gif" lazyload alt="更新软件"></p>
+<p> <img src="/2024/09/05/openclash/2.png" srcset="/img/loading.gif" lazyload alt="更新软件"></p>
 </li>
 <li><p>下载OpenClash，在终端上输入：</p>
  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">wget https://github.com/vernesong/OpenClash/releases/download/v0.46.014-beta/luci-app-openclash_0.46.014-beta_all.ipk -O openclash.ipk<br><br>opkg install openclash.ipk<br><br>reboot<br></code></pre></td></tr></table></figure>
 
-<p> <img src="/3.png" srcset="/img/loading.gif" lazyload alt="下载OpenClash"></p>
-<p> <img src="/4.png" srcset="/img/loading.gif" lazyload alt="安装OpenClash"></p>
-<p> 上述操作后将会重启路由器，若安装成功，重新进入高级管理页面 <a target="_blank" rel="noopener" href="http://192.168.8.1/cgi-bin/luci">http://192.168.8.1/cgi-bin/luci</a> （登录密码同上步骤1）中可以看到服务栏下方会出现OpenClash的页面，<br> 点击该页面会提示下载内核，至此OpenClash安装完成<br> <img src="/5.png" srcset="/img/loading.gif" lazyload alt="下载内核"></p>
-<p> <img src="/6.png" srcset="/img/loading.gif" lazyload alt="下载链接"></p>
+<p> <img src="/2024/09/05/openclash/3.png" srcset="/img/loading.gif" lazyload alt="下载OpenClash"></p>
+<p> <img src="/2024/09/05/openclash/4.png" srcset="/img/loading.gif" lazyload alt="安装OpenClash"></p>
+<p> 上述操作后将会重启路由器，若安装成功，重新进入高级管理页面 <a target="_blank" rel="noopener" href="http://192.168.8.1/cgi-bin/luci">http://192.168.8.1/cgi-bin/luci</a> （登录密码同上步骤1）中可以看到服务栏下方会出现OpenClash的页面，<br> 点击该页面会提示下载内核，至此OpenClash安装完成<br> <img src="/2024/09/05/openclash/5.png" srcset="/img/loading.gif" lazyload alt="下载内核"></p>
+<p> <img src="/2024/09/05/openclash/6.png" srcset="/img/loading.gif" lazyload alt="下载链接"></p>
 </li>
 </ol>
 <h2 id="配置订阅VPN节点"><a href="#配置订阅VPN节点" class="headerlink" title="配置订阅VPN节点"></a>配置订阅VPN节点</h2><ol>
-<li><p>在OpenClash中选中配置订阅<br><img src="/7.png" srcset="/img/loading.gif" lazyload alt="配置订阅"></p>
+<li><p>在OpenClash中选中配置订阅<br><img src="/2024/09/05/openclash/7.png" srcset="/img/loading.gif" lazyload alt="配置订阅"></p>
 </li>
-<li><p>从VPN供应商获取订阅链接<br><img src="/8.png" srcset="/img/loading.gif" lazyload alt="订阅链接"></p>
+<li><p>从VPN供应商获取订阅链接<br><img src="/2024/09/05/openclash/8.png" srcset="/img/loading.gif" lazyload alt="订阅链接"></p>
 </li>
-<li><p>赋值该链接到对应栏目<br><img src="/9.png" srcset="/img/loading.gif" lazyload alt="复制链接"></p>
+<li><p>赋值该链接到对应栏目<br><img src="/2024/09/05/openclash/9.png" srcset="/img/loading.gif" lazyload alt="复制链接"></p>
 </li>
-<li><p>检查状态<br> 若是上述步骤成功，可以看到如下图片，路由器已经启动VPN，可尝试登录外网<br> <img src="/10.png" srcset="/img/loading.gif" lazyload alt="成功"></p>
+<li><p>检查状态<br> 若是上述步骤成功，可以看到如下图片，路由器已经启动VPN，可尝试登录外网<br> <img src="/2024/09/05/openclash/10.png" srcset="/img/loading.gif" lazyload alt="成功"></p>
 </li>
 </ol>
 <h2 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h2><p>更多OpenClash的使用说明见官方仓库:<a target="_blank" rel="noopener" href="https://github.com/vernesong/OpenClash">https://github.com/vernesong/OpenClash</a></p>
