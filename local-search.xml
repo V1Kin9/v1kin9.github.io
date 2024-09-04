@@ -5,10 +5,36 @@
   
   <entry>
     <title>CPU-ARM-Hardfault-Thumb指令与ARM指令</title>
-    <link href="/2024/09/05/Thumb_and_arm_inst/"/>
-    <url>/2024/09/05/Thumb_and_arm_inst/</url>
+    <link href="/2024/09/05/CPU-ARM-Hardfault-Thumb%E6%8C%87%E4%BB%A4%E4%B8%8EARM%E6%8C%87%E4%BB%A4/"/>
+    <url>/2024/09/05/CPU-ARM-Hardfault-Thumb%E6%8C%87%E4%BB%A4%E4%B8%8EARM%E6%8C%87%E4%BB%A4/</url>
     
     <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近调试遇到一个很有趣的问题：某ARM程序需要实现一个跳转，该跳转目标是一个绝对地址，在实现跳转的时候，直接运行会触发异常，但单步调试却可以正常执行。</p><h2 id="原因分析思路"><a href="#原因分析思路" class="headerlink" title="原因分析思路"></a>原因分析思路</h2><ol><li><p>首先，该跳转的函数实现是通过内嵌汇编汇编实现的，使用的是BX指令，该指令会跳转到对应的寄存器中的目标地址，同时会把该指令的下一条指令（即BX指令在本上下文中的下一条指令）写到LR寄存器中，用于返回。</p></li><li><p>BX指令是具有切换架构状态的能力，即可以切换架构为ARM或Thumb状态。Thumb指令是16 bit（Thumb-2是32 bit）的，而ARM指令是32 bit。</p></li><li><p>在调试的过程中，看到J-Link-commander会提示架构与指令不符的提示，然后有自动修改CPSR.T的操作（把对应的bit修改为合法的值）<br><a href="https://wiki.segger.com/J-Link_Command_Strings#DisableCortexMXPSRAutoCorrectTBit">https://wiki.segger.com/J-Link_Command_Strings#DisableCortexMXPSRAutoCorrectTBit</a></p></li></ol><h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>通过以上现象，可以推断出，这个问题有可能是这样触发的：</p><ol><li>跳转的目标地址指令与当前的架构不一致</li><li>在单步调试的过程中，J-Link-Commander对对应的寄存器作了修改，导致单步调试时可以正常运行，而全速run或直接执行时，则会触发异常<br><a href="https://chatgpt.com/share/90ccfa35-b798-44e2-aaa1-40bf9844a15f">https://chatgpt.com/share/90ccfa35-b798-44e2-aaa1-40bf9844a15f</a></li></ol>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>CPU-ARM-Hardfault-异常处理</title>
+    <link href="/2024/09/05/CPU-ARM-Hardfault-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/"/>
+    <url>/2024/09/05/CPU-ARM-Hardfault-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/</url>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近在调试ARM的CPU，发现ARMv7-M架构的异常处理与RISC-V有一些差异，因此在此记录一下两个架构间的差异</p><h2 id="ARM的“XCAUSE”"><a href="#ARM的“XCAUSE”" class="headerlink" title="ARM的“XCAUSE”"></a>ARM的“XCAUSE”</h2><p>ARM的异常架构也有类似RISC-V的XCAUSE的原因异常寄存器，它简写为CFSR(Configurable Fault Status Register)。它是一个32bit的寄存器(ARMv7-M 32-bit CPU)，用法与RISC-V大同小异，用于表征CPU的异常原因。<br>CFSR主要分为三个部分，分别是UFSR(UsageFault Status Register)、BFSR(BusFault Status Register)和MMFSR(MemManage Fault Status Register)。这里比较有意思的是ARM会把RISC-V里面的访存相关的异常分为<br>MemManage Fault和BusFault，我个人猜测这个设计是为了把MPU的异常原因跟总线行为的异常原因区分开，以此更好地兼容TEE的总线设计。<br>在面对有一些总线ECC设计的SoC上，似乎这个设计会更精确地表明异常时来自总线上（ECC报错机制是基于总线response）</p><h2 id="ARM的“XEPC”"><a href="#ARM的“XEPC”" class="headerlink" title="ARM的“XEPC”"></a>ARM的“XEPC”</h2><p>ARMv7-M可能出于对CPU gatecount的考虑，并没有分配一个专门的寄存器用于存放异常地址，在这点上会使调试比较麻烦。<br>由于ARM的大部分异常都是同步的，所以，在触发异常时CPU会把对应的PC压栈到PSP或MSP，并且会在LR寄存器中明确告知是压栈到PSP还是MSP。<br>所以对于软件的调试，可以基于LR提供的信息，获取发生异常时的栈指针，然后，按照硬件压栈的顺序，获取对应的PC（SP + 7 * XLEN）。</p><p>TODD: 补充ARMv7-A&#x2F;ARMv8的异常返回地址</p><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>ARM的异常处理对比RISC-V而言大同小异，但在某些特定情境下，ARM的异常报错机制更准确，更便于定位问题。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>CPU-RISCV-PMP-rt-thread-mal适配</title>
+    <link href="/2024/09/05/CPU-RISCV-PMP-rt-thread-mal%E9%80%82%E9%85%8D/"/>
+    <url>/2024/09/05/CPU-RISCV-PMP-rt-thread-mal%E9%80%82%E9%85%8D/</url>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近由于工作原因，需要移植一个基于ARM的MPU(memeory protection unit)机制的rt-thread的组件<a href="https://github.com/V1Kin9/rt-thread-mal">MAL</a><br>看到这个仓库的risc-v目录下是有一份代码，但尚未实现，一时心血来潮，想试着实现一个基于risc-v的rt-thread-mal</p><h2 id="接口评估"><a href="#接口评估" class="headerlink" title="接口评估"></a>接口评估</h2><p>看了一下ARM相关的MAL实现接口，它主要是需要实现以下三个接口:</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">rt_mpu_ops</span> _<span class="hljs-title">mpu_ops</span> =</span><br>&#123;<br>    .init         = _mpu_init,<br>    .switch_table = _mpu_switch_table,<br>    .get_info     = _mpu_get_info<br>&#125;;<br></code></pre></td></tr></table></figure><p>以上三个接口分别：</p><ol><li>init: 对硬件能使用的最大的memory region作MPU的初始化</li><li>switch_table: 对每个thread的MAL table作切换</li><li>获取当前thread的MAL属性</li></ol><p>基于上述三点，需要硬件实现的主要是1和2；其中在risc-v架构中，若rt-thread整体运行在M-mode下，且不把PMP的pmpcfgx.L设置为1，则能够实现根据thread动态修改PMP的配置属性（权限与地址），因此从原理上来看是可行的。</p><h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol><li>由于risc-v与ARM不同，没有为PMP设置单独的使能控制位来关闭或使能全局的PMP，因此在动态切换PMP的配置的时候，需要首先把pmpcfgx.A设置为0，表示该PMP entry不启用，然后再作修改</li><li>当PMP的pmpcfgx.A配置为NAPOT的时候，需注意pmpaddrx的地址需保证与2的若干次幂对齐；此时可能会放大或缩小thread的MAL配置表，因此在可以的情况下，尽量把pmpcfgx.A配置为TOR，尽管这样会利用的内存配置区域</li></ol>]]></content>
     
     
     

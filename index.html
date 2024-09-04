@@ -227,13 +227,13 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/09/05/Thumb_and_arm_inst/" target="_self">
+        <a href="/2024/09/05/CPU-ARM-Hardfault-Thumb%E6%8C%87%E4%BB%A4%E4%B8%8EARM%E6%8C%87%E4%BB%A4/" target="_self">
           CPU-ARM-Hardfault-Thumb指令与ARM指令
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/05/Thumb_and_arm_inst/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/05/CPU-ARM-Hardfault-Thumb%E6%8C%87%E4%BB%A4%E4%B8%8EARM%E6%8C%87%E4%BB%A4/" target="_self">
         <div>
           背景最近调试遇到一个很有趣的问题：某ARM程序需要实现一个跳转，该跳转目标是一个绝对地址，在实现跳转的时候，直接运行会触发异常，但单步调试却可以正常执行。 原因分析思路 首先，该跳转的函数实现是通过内嵌汇编汇编实现的，使用的是BX指令，该指令会跳转到对应的寄存器中的目标地址，同时会把该指令的下一条指令（即BX指令在本上下文中的下一条指令）写到LR寄存器中，用于返回。  BX指令是具有切换架构状态的
         </div>
@@ -243,7 +243,73 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-09-05 01:07" pubdate>
+            <time datetime="2024-09-05 02:34" pubdate>
+              2024-09-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/09/05/CPU-ARM-Hardfault-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" target="_self">
+          CPU-ARM-Hardfault-异常处理
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/05/CPU-ARM-Hardfault-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" target="_self">
+        <div>
+          背景最近在调试ARM的CPU，发现ARMv7-M架构的异常处理与RISC-V有一些差异，因此在此记录一下两个架构间的差异 ARM的“XCAUSE”ARM的异常架构也有类似RISC-V的XCAUSE的原因异常寄存器，它简写为CFSR(Configurable Fault Status Register)。它是一个32bit的寄存器(ARMv7-M 32-bit CPU)，用法与RISC-V大同小异，
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-09-05 02:34" pubdate>
+              2024-09-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/09/05/CPU-RISCV-PMP-rt-thread-mal%E9%80%82%E9%85%8D/" target="_self">
+          CPU-RISCV-PMP-rt-thread-mal适配
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/05/CPU-RISCV-PMP-rt-thread-mal%E9%80%82%E9%85%8D/" target="_self">
+        <div>
+          背景最近由于工作原因，需要移植一个基于ARM的MPU(memeory protection unit)机制的rt-thread的组件MAL看到这个仓库的risc-v目录下是有一份代码，但尚未实现，一时心血来潮，想试着实现一个基于risc-v的rt-thread-mal 接口评估看了一下ARM相关的MAL实现接口，它主要是需要实现以下三个接口: 123456static struct rt_mpu_
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-09-05 02:34" pubdate>
               2024-09-05
             </time>
           </div>

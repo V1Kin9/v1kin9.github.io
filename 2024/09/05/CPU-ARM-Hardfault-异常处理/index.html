@@ -19,21 +19,21 @@
   <meta name="author" content="V1kin9">
   <meta name="keywords" content="">
   
-    <meta name="description" content="背景最近调试遇到一个很有趣的问题：某ARM程序需要实现一个跳转，该跳转目标是一个绝对地址，在实现跳转的时候，直接运行会触发异常，但单步调试却可以正常执行。 原因分析思路 首先，该跳转的函数实现是通过内嵌汇编汇编实现的，使用的是BX指令，该指令会跳转到对应的寄存器中的目标地址，同时会把该指令的下一条指令（即BX指令在本上下文中的下一条指令）写到LR寄存器中，用于返回。  BX指令是具有切换架构状态的">
+    <meta name="description" content="背景最近在调试ARM的CPU，发现ARMv7-M架构的异常处理与RISC-V有一些差异，因此在此记录一下两个架构间的差异 ARM的“XCAUSE”ARM的异常架构也有类似RISC-V的XCAUSE的原因异常寄存器，它简写为CFSR(Configurable Fault Status Register)。它是一个32bit的寄存器(ARMv7-M 32-bit CPU)，用法与RISC-V大同小异，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CPU-ARM-Hardfault-Thumb指令与ARM指令">
-<meta property="og:url" content="https://v1kin9.github.io/2024/09/05/Thumb_and_arm_inst/index.html">
+<meta property="og:title" content="CPU-ARM-Hardfault-异常处理">
+<meta property="og:url" content="https://v1kin9.github.io/2024/09/05/CPU-ARM-Hardfault-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/index.html">
 <meta property="og:site_name" content="Viking&#39;s Blog">
-<meta property="og:description" content="背景最近调试遇到一个很有趣的问题：某ARM程序需要实现一个跳转，该跳转目标是一个绝对地址，在实现跳转的时候，直接运行会触发异常，但单步调试却可以正常执行。 原因分析思路 首先，该跳转的函数实现是通过内嵌汇编汇编实现的，使用的是BX指令，该指令会跳转到对应的寄存器中的目标地址，同时会把该指令的下一条指令（即BX指令在本上下文中的下一条指令）写到LR寄存器中，用于返回。  BX指令是具有切换架构状态的">
+<meta property="og:description" content="背景最近在调试ARM的CPU，发现ARMv7-M架构的异常处理与RISC-V有一些差异，因此在此记录一下两个架构间的差异 ARM的“XCAUSE”ARM的异常架构也有类似RISC-V的XCAUSE的原因异常寄存器，它简写为CFSR(Configurable Fault Status Register)。它是一个32bit的寄存器(ARMv7-M 32-bit CPU)，用法与RISC-V大同小异，">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-09-04T17:07:11.712Z">
-<meta property="article:modified_time" content="2024-09-04T17:56:46.761Z">
+<meta property="article:published_time" content="2024-09-04T18:34:56.631Z">
+<meta property="article:modified_time" content="2024-09-04T18:35:29.651Z">
 <meta property="article:author" content="V1kin9">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>CPU-ARM-Hardfault-Thumb指令与ARM指令 - Viking&#39;s Blog</title>
+  <title>CPU-ARM-Hardfault-异常处理 - Viking&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -199,7 +199,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="CPU-ARM-Hardfault-Thumb指令与ARM指令"></span>
+            <span id="subtitle" data-typed-text="CPU-ARM-Hardfault-异常处理"></span>
           
         </div>
 
@@ -210,7 +210,7 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-09-05 01:07" pubdate>
+        <time datetime="2024-09-05 02:34" pubdate>
           2024年9月5日 凌晨
         </time>
       </span>
@@ -222,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          364 字
+          441 字
         
       </span>
     
@@ -270,25 +270,16 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">CPU-ARM-Hardfault-Thumb指令与ARM指令</h1>
+            <h1 id="seo-header">CPU-ARM-Hardfault-异常处理</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近调试遇到一个很有趣的问题：某ARM程序需要实现一个跳转，该跳转目标是一个绝对地址，在实现跳转的时候，直接运行会触发异常，但单步调试却可以正常执行。</p>
-<h2 id="原因分析思路"><a href="#原因分析思路" class="headerlink" title="原因分析思路"></a>原因分析思路</h2><ol>
-<li><p>首先，该跳转的函数实现是通过内嵌汇编汇编实现的，使用的是BX指令，该指令会跳转到对应的寄存器中的目标地址，同时会把该指令的下一条指令（即BX指令在本上下文中的下一条指令）写到LR寄存器中，用于返回。</p>
-</li>
-<li><p>BX指令是具有切换架构状态的能力，即可以切换架构为ARM或Thumb状态。Thumb指令是16 bit（Thumb-2是32 bit）的，而ARM指令是32 bit。</p>
-</li>
-<li><p>在调试的过程中，看到J-Link-commander会提示架构与指令不符的提示，然后有自动修改CPSR.T的操作（把对应的bit修改为合法的值）<br><a target="_blank" rel="noopener" href="https://wiki.segger.com/J-Link_Command_Strings#DisableCortexMXPSRAutoCorrectTBit">https://wiki.segger.com/J-Link_Command_Strings#DisableCortexMXPSRAutoCorrectTBit</a></p>
-</li>
-</ol>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>通过以上现象，可以推断出，这个问题有可能是这样触发的：</p>
-<ol>
-<li>跳转的目标地址指令与当前的架构不一致</li>
-<li>在单步调试的过程中，J-Link-Commander对对应的寄存器作了修改，导致单步调试时可以正常运行，而全速run或直接执行时，则会触发异常<br><a target="_blank" rel="noopener" href="https://chatgpt.com/share/90ccfa35-b798-44e2-aaa1-40bf9844a15f">https://chatgpt.com/share/90ccfa35-b798-44e2-aaa1-40bf9844a15f</a></li>
-</ol>
+                <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近在调试ARM的CPU，发现ARMv7-M架构的异常处理与RISC-V有一些差异，因此在此记录一下两个架构间的差异</p>
+<h2 id="ARM的“XCAUSE”"><a href="#ARM的“XCAUSE”" class="headerlink" title="ARM的“XCAUSE”"></a>ARM的“XCAUSE”</h2><p>ARM的异常架构也有类似RISC-V的XCAUSE的原因异常寄存器，它简写为CFSR(Configurable Fault Status Register)。它是一个32bit的寄存器(ARMv7-M 32-bit CPU)，用法与RISC-V大同小异，用于表征CPU的异常原因。<br>CFSR主要分为三个部分，分别是UFSR(UsageFault Status Register)、BFSR(BusFault Status Register)和MMFSR(MemManage Fault Status Register)。这里比较有意思的是ARM会把RISC-V里面的访存相关的异常分为<br>MemManage Fault和BusFault，我个人猜测这个设计是为了把MPU的异常原因跟总线行为的异常原因区分开，以此更好地兼容TEE的总线设计。<br>在面对有一些总线ECC设计的SoC上，似乎这个设计会更精确地表明异常时来自总线上（ECC报错机制是基于总线response）</p>
+<h2 id="ARM的“XEPC”"><a href="#ARM的“XEPC”" class="headerlink" title="ARM的“XEPC”"></a>ARM的“XEPC”</h2><p>ARMv7-M可能出于对CPU gatecount的考虑，并没有分配一个专门的寄存器用于存放异常地址，在这点上会使调试比较麻烦。<br>由于ARM的大部分异常都是同步的，所以，在触发异常时CPU会把对应的PC压栈到PSP或MSP，并且会在LR寄存器中明确告知是压栈到PSP还是MSP。<br>所以对于软件的调试，可以基于LR提供的信息，获取发生异常时的栈指针，然后，按照硬件压栈的顺序，获取对应的PC（SP + 7 * XLEN）。</p>
+<p>TODD: 补充ARMv7-A&#x2F;ARMv8的异常返回地址</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>ARM的异常处理对比RISC-V而言大同小异，但在某些特定情境下，ARM的异常报错机制更准确，更便于定位问题。</p>
 
                 
               </div>
@@ -306,8 +297,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>CPU-ARM-Hardfault-Thumb指令与ARM指令</div>
-      <div>https://v1kin9.github.io/2024/09/05/Thumb_and_arm_inst/</div>
+      <div>CPU-ARM-Hardfault-异常处理</div>
+      <div>https://v1kin9.github.io/2024/09/05/CPU-ARM-Hardfault-异常处理/</div>
     </div>
     <div class="license-meta">
       
@@ -351,9 +342,21 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2024/09/05/CPU-ARM-Hardfault-Thumb%E6%8C%87%E4%BB%A4%E4%B8%8EARM%E6%8C%87%E4%BB%A4/" title="CPU-ARM-Hardfault-Thumb指令与ARM指令">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CPU-ARM-Hardfault-Thumb指令与ARM指令</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2024/09/05/CPU-RISCV-PMP-rt-thread-mal%E9%80%82%E9%85%8D/" title="CPU-RISCV-PMP-rt-thread-mal适配">
+                        <span class="hidden-mobile">CPU-RISCV-PMP-rt-thread-mal适配</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
