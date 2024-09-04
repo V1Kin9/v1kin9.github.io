@@ -227,6 +227,39 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/09/05/openclash/" target="_self">
+          GL.iNET系列路由器安装OpenClash简易教程
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/05/openclash/" target="_self">
+        <div>
+          安装OpenClash安装包 在命令行中输入:  1ssh root@192.168.8.1    P.S. 密码为路由器管理员密码（非Wifi登录密码）  更新软件及安装依赖，在终端上输入:  123opkg updateopkg install coreutils-nohup bash iptables dnsmasq-full curl ca-certificates ipset ip-fu
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-09-05 02:55" pubdate>
+              2024-09-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/09/05/CPU-ARM-Hardfault-Thumb-and-ARM/" target="_self">
           CPU-ARM-Hardfault-Thumb指令与ARM指令
         </a>
@@ -260,15 +293,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/09/05/CPU-RISCV-PMP-rt-thread-mal/" target="_self">
-          CPU-RISCV-PMP-rt-thread-mal适配
+        <a href="/2024/09/05/CPU-ARM-Hardfault-execption/" target="_self">
+          CPU-ARM-Hardfault-异常处理
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/05/CPU-RISCV-PMP-rt-thread-mal/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/05/CPU-ARM-Hardfault-execption/" target="_self">
         <div>
-          背景最近由于工作原因，需要移植一个基于ARM的MPU(memeory protection unit)机制的rt-thread的组件MAL看到这个仓库的risc-v目录下是有一份代码，但尚未实现，一时心血来潮，想试着实现一个基于risc-v的rt-thread-mal 接口评估看了一下ARM相关的MAL实现接口，它主要是需要实现以下三个接口: 123456static struct rt_mpu_
+          背景最近在调试ARM的CPU，发现ARMv7-M架构的异常处理与RISC-V有一些差异，因此在此记录一下两个架构间的差异 ARM的“XCAUSE”ARM的异常架构也有类似RISC-V的XCAUSE的原因异常寄存器，它简写为CFSR(Configurable Fault Status Register)。它是一个32bit的寄存器(ARMv7-M 32-bit CPU)，用法与RISC-V大同小异，
         </div>
       </a>
 
@@ -293,15 +326,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/09/05/CPU-ARM-Hardfault-execption/" target="_self">
-          CPU-ARM-Hardfault-异常处理
+        <a href="/2024/09/05/CPU-RISCV-PMP-rt-thread-mal/" target="_self">
+          CPU-RISCV-PMP-rt-thread-mal适配
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/05/CPU-ARM-Hardfault-execption/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/05/CPU-RISCV-PMP-rt-thread-mal/" target="_self">
         <div>
-          背景最近在调试ARM的CPU，发现ARMv7-M架构的异常处理与RISC-V有一些差异，因此在此记录一下两个架构间的差异 ARM的“XCAUSE”ARM的异常架构也有类似RISC-V的XCAUSE的原因异常寄存器，它简写为CFSR(Configurable Fault Status Register)。它是一个32bit的寄存器(ARMv7-M 32-bit CPU)，用法与RISC-V大同小异，
+          背景最近由于工作原因，需要移植一个基于ARM的MPU(memeory protection unit)机制的rt-thread的组件MAL看到这个仓库的risc-v目录下是有一份代码，但尚未实现，一时心血来潮，想试着实现一个基于risc-v的rt-thread-mal 接口评估看了一下ARM相关的MAL实现接口，它主要是需要实现以下三个接口: 123456static struct rt_mpu_
         </div>
       </a>
 

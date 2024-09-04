@@ -19,21 +19,32 @@
   <meta name="author" content="V1kin9">
   <meta name="keywords" content="">
   
-    <meta name="description" content="背景最近由于工作原因，需要移植一个基于ARM的MPU(memeory protection unit)机制的rt-thread的组件MAL看到这个仓库的risc-v目录下是有一份代码，但尚未实现，一时心血来潮，想试着实现一个基于risc-v的rt-thread-mal 接口评估看了一下ARM相关的MAL实现接口，它主要是需要实现以下三个接口: 123456static struct rt_mpu_">
+    <meta name="description" content="安装OpenClash安装包 在命令行中输入:  1ssh root@192.168.8.1    P.S. 密码为路由器管理员密码（非Wifi登录密码）  更新软件及安装依赖，在终端上输入:  123opkg updateopkg install coreutils-nohup bash iptables dnsmasq-full curl ca-certificates ipset ip-fu">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CPU-RISCV-PMP-rt-thread-mal适配">
-<meta property="og:url" content="https://v1kin9.github.io/2024/09/05/CPU-RISCV-PMP-rt-thread-mal/index.html">
+<meta property="og:title" content="GL.iNET系列路由器安装OpenClash简易教程">
+<meta property="og:url" content="https://v1kin9.github.io/2024/09/05/openclash/index.html">
 <meta property="og:site_name" content="Viking&#39;s Blog">
-<meta property="og:description" content="背景最近由于工作原因，需要移植一个基于ARM的MPU(memeory protection unit)机制的rt-thread的组件MAL看到这个仓库的risc-v目录下是有一份代码，但尚未实现，一时心血来潮，想试着实现一个基于risc-v的rt-thread-mal 接口评估看了一下ARM相关的MAL实现接口，它主要是需要实现以下三个接口: 123456static struct rt_mpu_">
+<meta property="og:description" content="安装OpenClash安装包 在命令行中输入:  1ssh root@192.168.8.1    P.S. 密码为路由器管理员密码（非Wifi登录密码）  更新软件及安装依赖，在终端上输入:  123opkg updateopkg install coreutils-nohup bash iptables dnsmasq-full curl ca-certificates ipset ip-fu">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-09-04T18:34:56.631Z">
-<meta property="article:modified_time" content="2024-09-04T18:35:54.641Z">
+<meta property="og:image" content="https://v1kin9.github.io/1.png">
+<meta property="og:image" content="https://v1kin9.github.io/2.png">
+<meta property="og:image" content="https://v1kin9.github.io/3.png">
+<meta property="og:image" content="https://v1kin9.github.io/4.png">
+<meta property="og:image" content="https://v1kin9.github.io/5.png">
+<meta property="og:image" content="https://v1kin9.github.io/6.png">
+<meta property="og:image" content="https://v1kin9.github.io/7.png">
+<meta property="og:image" content="https://v1kin9.github.io/8.png">
+<meta property="og:image" content="https://v1kin9.github.io/9.png">
+<meta property="og:image" content="https://v1kin9.github.io/10.png">
+<meta property="article:published_time" content="2024-09-04T18:55:48.500Z">
+<meta property="article:modified_time" content="2024-09-04T19:06:18.380Z">
 <meta property="article:author" content="V1kin9">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://v1kin9.github.io/1.png">
   
   
   
-  <title>CPU-RISCV-PMP-rt-thread-mal适配 - Viking&#39;s Blog</title>
+  <title>GL.iNET系列路由器安装OpenClash简易教程 - Viking&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -199,7 +210,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="CPU-RISCV-PMP-rt-thread-mal适配"></span>
+            <span id="subtitle" data-typed-text="GL.iNET系列路由器安装OpenClash简易教程"></span>
           
         </div>
 
@@ -210,7 +221,7 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-09-05 02:34" pubdate>
+        <time datetime="2024-09-05 02:55" pubdate>
           2024年9月5日 凌晨
         </time>
       </span>
@@ -222,7 +233,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          373 字
+          267 字
         
       </span>
     
@@ -233,7 +244,7 @@
         
         
         
-          4 分钟
+          3 分钟
         
       </span>
     
@@ -270,26 +281,42 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">CPU-RISCV-PMP-rt-thread-mal适配</h1>
+            <h1 id="seo-header">GL.iNET系列路由器安装OpenClash简易教程</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近由于工作原因，需要移植一个基于ARM的MPU(memeory protection unit)机制的rt-thread的组件<a target="_blank" rel="noopener" href="https://github.com/V1Kin9/rt-thread-mal">MAL</a><br>看到这个仓库的risc-v目录下是有一份代码，但尚未实现，一时心血来潮，想试着实现一个基于risc-v的rt-thread-mal</p>
-<h2 id="接口评估"><a href="#接口评估" class="headerlink" title="接口评估"></a>接口评估</h2><p>看了一下ARM相关的MAL实现接口，它主要是需要实现以下三个接口:</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">rt_mpu_ops</span> _<span class="hljs-title">mpu_ops</span> =</span><br>&#123;<br>    .init         = _mpu_init,<br>    .switch_table = _mpu_switch_table,<br>    .get_info     = _mpu_get_info<br>&#125;;<br></code></pre></td></tr></table></figure>
+                <h2 id="安装OpenClash安装包"><a href="#安装OpenClash安装包" class="headerlink" title="安装OpenClash安装包"></a>安装OpenClash安装包</h2><ol>
+<li><p>在命令行中输入:</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">ssh root@192.168.8.1<br></code></pre></td></tr></table></figure>
 
-<p>以上三个接口分别：</p>
-<ol>
-<li>init: 对硬件能使用的最大的memory region作MPU的初始化</li>
-<li>switch_table: 对每个thread的MAL table作切换</li>
-<li>获取当前thread的MAL属性</li>
+<p> <img src="/1.png" srcset="/img/loading.gif" lazyload alt="登录"><br> P.S. 密码为路由器管理员密码（非Wifi登录密码）</p>
+</li>
+<li><p>更新软件及安装依赖，在终端上输入:</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">opkg update<br><br>opkg install coreutils-nohup bash iptables dnsmasq-full curl ca-certificates ipset ip-full iptables-mod-tproxy iptables-mod-extra libcap libcap-bin ruby ruby-yaml kmod-tun kmod-inet-diag unzip luci-compat luci luci-base<br></code></pre></td></tr></table></figure>
+
+<p> <img src="/2.png" srcset="/img/loading.gif" lazyload alt="更新软件"></p>
+</li>
+<li><p>下载OpenClash，在终端上输入：</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">wget https://github.com/vernesong/OpenClash/releases/download/v0.46.014-beta/luci-app-openclash_0.46.014-beta_all.ipk -O openclash.ipk<br><br>opkg install openclash.ipk<br><br>reboot<br></code></pre></td></tr></table></figure>
+
+<p> <img src="/3.png" srcset="/img/loading.gif" lazyload alt="下载OpenClash"></p>
+<p> <img src="/4.png" srcset="/img/loading.gif" lazyload alt="安装OpenClash"></p>
+<p> 上述操作后将会重启路由器，若安装成功，重新进入高级管理页面 <a target="_blank" rel="noopener" href="http://192.168.8.1/cgi-bin/luci">http://192.168.8.1/cgi-bin/luci</a> （登录密码同上步骤1）中可以看到服务栏下方会出现OpenClash的页面，<br> 点击该页面会提示下载内核，至此OpenClash安装完成<br> <img src="/5.png" srcset="/img/loading.gif" lazyload alt="下载内核"></p>
+<p> <img src="/6.png" srcset="/img/loading.gif" lazyload alt="下载链接"></p>
+</li>
 </ol>
-<p>基于上述三点，需要硬件实现的主要是1和2；其中在risc-v架构中，若rt-thread整体运行在M-mode下，且不把PMP的pmpcfgx.L设置为1，则能够实现根据thread动态修改PMP的配置属性（权限与地址），因此从原理上来看是可行的。</p>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
-<li>由于risc-v与ARM不同，没有为PMP设置单独的使能控制位来关闭或使能全局的PMP，因此在动态切换PMP的配置的时候，需要首先把pmpcfgx.A设置为0，表示该PMP entry不启用，然后再作修改</li>
-<li>当PMP的pmpcfgx.A配置为NAPOT的时候，需注意pmpaddrx的地址需保证与2的若干次幂对齐；此时可能会放大或缩小thread的MAL配置表，因此在可以的情况下，尽量把pmpcfgx.A配置为TOR，尽管这样会利用的内存配置区域</li>
+<h2 id="配置订阅VPN节点"><a href="#配置订阅VPN节点" class="headerlink" title="配置订阅VPN节点"></a>配置订阅VPN节点</h2><ol>
+<li><p>在OpenClash中选中配置订阅<br><img src="/7.png" srcset="/img/loading.gif" lazyload alt="配置订阅"></p>
+</li>
+<li><p>从VPN供应商获取订阅链接<br><img src="/8.png" srcset="/img/loading.gif" lazyload alt="订阅链接"></p>
+</li>
+<li><p>赋值该链接到对应栏目<br><img src="/9.png" srcset="/img/loading.gif" lazyload alt="复制链接"></p>
+</li>
+<li><p>检查状态<br> 若是上述步骤成功，可以看到如下图片，路由器已经启动VPN，可尝试登录外网<br> <img src="/10.png" srcset="/img/loading.gif" lazyload alt="成功"></p>
+</li>
 </ol>
+<h2 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h2><p>更多OpenClash的使用说明见官方仓库:<a target="_blank" rel="noopener" href="https://github.com/vernesong/OpenClash">https://github.com/vernesong/OpenClash</a></p>
 
                 
               </div>
@@ -307,8 +334,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>CPU-RISCV-PMP-rt-thread-mal适配</div>
-      <div>https://v1kin9.github.io/2024/09/05/CPU-RISCV-PMP-rt-thread-mal/</div>
+      <div>GL.iNET系列路由器安装OpenClash简易教程</div>
+      <div>https://v1kin9.github.io/2024/09/05/openclash/</div>
     </div>
     <div class="license-meta">
       
@@ -352,15 +379,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/09/05/CPU-ARM-Hardfault-execption/" title="CPU-ARM-Hardfault-异常处理">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">CPU-ARM-Hardfault-异常处理</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2024/09/05/CPU-ARM-Hardfault-Thumb-and-ARM/" title="CPU-ARM-Hardfault-Thumb指令与ARM指令">
+                        <span class="hidden-mobile">CPU-ARM-Hardfault-Thumb指令与ARM指令</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
